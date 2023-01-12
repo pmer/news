@@ -39,7 +39,7 @@ parseHex32(U32& u, StringView s) noexcept {
  * @param ref - XML character entity reference without the starting & and ending ;
  */
 static void
-expandOneRef(String& out, StringView ref) noexcept {
+expandOne(String& out, StringView ref) noexcept {
     if (ref.size == 0) {
         goto fail;
     }
@@ -85,13 +85,13 @@ expand(String& out, StringView in) noexcept {
     }
     for (Size i = 0; i < in.size; i++) {
         char c = in[i];
-        if (c != '&' || i + 1 == in.size || in[i + 1] != '#') {
+        if (c != '&' || i + 1 == in.size) {
             out << c;
         }
         else {
             StringPosition semi = in.find(';', i + 1);
             if (semi != SV_NOT_FOUND) {
-                expandOneRef(out, in.substr(i + 1, semi - 1 - i));
+                expandOne(out, in.substr(i + 1, semi - 1 - i));
                 i = semi;
             }
             else {
