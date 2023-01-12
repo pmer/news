@@ -1,6 +1,7 @@
 cmake_minimum_required(VERSION 2.8.9...3.25)
 project(news C CXX)
 
+set(CURL 1)
 set(UTIL_ONLY 1)
 add_subdirectory(carob)
 
