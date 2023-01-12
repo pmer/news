@@ -65,6 +65,10 @@ expandOneRef(String& out, StringView ref) noexcept {
         out << static_cast<char>(u);
         return;
     }
+    if (ref == "amp") {
+        out << '&';
+        return;
+    }
 
 fail:
     out << '&' << ref << ';';
