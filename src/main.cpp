@@ -18,7 +18,7 @@ main() noexcept {
     }
 
     for (HNItem& item : hn->items) {
-        sout << item.title << ' ' << item.link << '\n';
+        sout << item.title << "\n\t" << item.link << '\n';
     }
     return 0;
 }
