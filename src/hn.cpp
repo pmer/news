@@ -39,7 +39,7 @@ parseHex32(U32& u, StringView s) noexcept {
  * @param ref - XML character entity reference without the starting & and ending ;
  */
 static void
-expandOne(String& out, StringView ref) noexcept {
+unescapeOne(String& out, StringView ref) noexcept {
     if (ref.size == 0) {
         goto fail;
     }
@@ -69,6 +69,18 @@ expandOne(String& out, StringView ref) noexcept {
         out << '&';
         return;
     }
+    if (ref == "gt") {
+        out << '>';
+        return;
+    }
+    if (ref == "lt") {
+        out << '<';
+        return;
+    }
+    if (ref == "quot") {
+        out << '"';
+        return;
+    }
 
 fail:
     out << '&' << ref << ';';
@@ -78,7 +90,7 @@ fail:
  * Expand XML character references.
  */
 void
-expand(String& out, StringView in) noexcept {
+unescape(String& out, StringView in) noexcept {
     out.size = 0;
     if (in.size > out.capacity) {
         out.reserve(in.size);
@@ -91,7 +103,7 @@ expand(String& out, StringView in) noexcept {
         else {
             StringPosition semi = in.find(';', i + 1);
             if (semi != SV_NOT_FOUND) {
-                expandOne(out, in.substr(i + 1, semi - 1 - i));
+                unescapeOne(out, in.substr(i + 1, semi - 1 - i));
                 i = semi;
             }
             else {
@@ -122,13 +134,13 @@ hnParse(String& response) noexcept {
             // Do nothing.
         }
         else if (tag.startsWith("title>")) {
-            expand(item->title, tag.substr(6));
+            unescape(item->title, tag.substr(6));
         }
         else if (tag.startsWith("link>")) {
-            expand(item->link, tag.substr(5));
+            unescape(item->link, tag.substr(5));
         }
         else if (tag.startsWith("comments>")) {
-            expand(item->commentsHref, tag.substr(9));
+            unescape(item->commentsHref, tag.substr(9));
         }
     }
 
