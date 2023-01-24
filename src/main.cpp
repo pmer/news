@@ -4,7 +4,7 @@
 #include "util/compiler.h"
 #include "util/io.h"
 
-const char* header = "<!DOCTYPE html><html><body>";
+const char* header = "<!DOCTYPE html><html><head><meta charset=\"utf-8\"></head><body>";
 const char* trailer = "</body></html>";
 
 static void
