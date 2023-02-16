@@ -134,7 +134,10 @@ hnParse(String& response) noexcept {
             // Do nothing.
         }
         else if (tag.startsWith("title>")) {
-            unescape(item->title, tag.substr(6));
+            // For some reason, at least titles are double-escaped. Are the other values also double-escaped?
+            String tmp;
+            unescape(tmp, tag.substr(6));
+            unescape(item->title, tmp);
         }
         else if (tag.startsWith("link>")) {
             unescape(item->link, tag.substr(5));
